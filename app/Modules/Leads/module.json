@@ -1,0 +1,10 @@
+{
+    "name": "Leads",
+    "version": "0.1.0",
+    "description": "Secure website enquiry collection and lead management for Multilancer.",
+    "dependencies": ["Cms"],
+    "config": {
+        "enabled": true,
+        "default_status": "new"
+    }
+}
