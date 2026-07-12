@@ -2,6 +2,9 @@
 
 @section('title', $page->meta_title ?? $page->title ?? config('app.name', 'Multilancer Limited'))
 @section('meta_description', $page->meta_description ?? '')
+@section('robots', ! empty($isPreview) ? 'noindex,nofollow' : ($page->robots ?: 'index,follow'))
+@section('canonical_url', $page->canonical_url ?: url()->current())
+@section('og_type', 'website')
 
 @section('content')
     @forelse (($sections ?? []) as $section)
