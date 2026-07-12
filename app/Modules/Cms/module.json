@@ -10,11 +10,21 @@
         "reserved_slugs": [
             "api",
             "app",
+            "billing",
             "dashboard",
+            "email",
+            "forgot-password",
+            "livewire",
             "login",
             "logout",
             "register",
-            "soloadmin"
+            "reset-password",
+            "sanctum",
+            "soloadmin",
+            "teams",
+            "two-factor-challenge",
+            "up",
+            "user"
         ]
     }
 }
