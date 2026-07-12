@@ -1,12 +1,11 @@
 <?php
 
 use App\Models\User;
+use App\Modules\Cms\Http\Controllers\PageController;
 use Filament\Facades\Filament;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [PageController::class, 'home'])->name('home');
 
 // Authenticated home — super admins land in the "admin" panel, everyone else in
 // the user-facing "app" panel.
