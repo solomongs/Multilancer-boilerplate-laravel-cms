@@ -26,7 +26,11 @@ The frontend is being converted into reusable Blade layouts, components and stru
 - [x] Add an automated test for the admin login path
 - [x] Create and register the M2026 theme scaffold
 - [x] Add responsive layout, navigation, footer and reusable section styling
-- [ ] Complete the file-by-file M2026 audit
+- [x] Add a safe Python ZIP extractor and static-site inventory generator
+- [x] Add Python tests for extraction, reporting and ZIP traversal rejection
+- [x] Add the Python extraction test to pull-request CI
+- [ ] Run the extractor against the original `m2026.zip`
+- [ ] Complete the generated file-by-file M2026 audit
 - [ ] Migrate the audited M2026 HTML, CSS, JavaScript, images and media
 
 ### CMS core
@@ -60,15 +64,15 @@ The frontend is being converted into reusable Blade layouts, components and stru
 
 ### Verification
 
-- [x] Add pull-request CI configuration for migrations, Laravel tests and frontend build
+- [x] Add pull-request CI configuration for Python extraction tests, migrations, Laravel tests and frontend build
 - [ ] Receive a successful GitHub Actions run
 - [ ] Complete visual comparison against the original M2026 package
 
 ## Verification state
 
-Implementation files and tests are committed. GitHub currently reports no workflow run or commit checks for this fork, so the PHP tests and frontend build must not be described as passing until Actions is enabled and completes successfully.
+Implementation files and tests are committed. GitHub currently reports no workflow run or commit checks for this fork, so the Python tests, PHP tests and frontend build must not be described as passing until Actions is enabled and completes successfully.
 
-The live AppDeploy delivery tracker has passed its own frontend, backend, network and end-to-end QA checks. This verifies the tracker application only; it does not replace Laravel repository CI.
+The live AppDeploy delivery tracker has passed its own frontend, backend, network and end-to-end QA checks. This verifies the tracker application only; it does not replace repository CI.
 
 ## Current CMS capabilities
 
@@ -93,6 +97,28 @@ The live AppDeploy delivery tracker has passed its own frontend, backend, networ
 - Theme-based homepage and default-page rendering
 - Public fallback to the original welcome page when no CMS homepage exists
 
+## Python extraction capability
+
+The repository now includes `scripts/extract_m2026.py`. It safely extracts a supplied ZIP file and generates:
+
+- the archive SHA-256 checksum;
+- a complete file and extension inventory;
+- detected HTML page titles and paths;
+- HTML and CSS local/external references;
+- missing page and asset references;
+- duplicate file groups using SHA-256 hashes;
+- a human-readable Markdown audit;
+- a machine-readable JSON inventory.
+
+Run it from the repository root with:
+
+```bash
+python scripts/extract_m2026.py /mnt/data/m2026.zip \
+  --output storage/app/m2026-source \
+  --report docs/m2026-audit \
+  --force
+```
+
 ## Hard constraints
 
 - Preserve the existing M2026 layouts, CSS, navigation, images, responsive behaviour and interactions.
@@ -106,8 +132,8 @@ The live AppDeploy delivery tracker has passed its own frontend, backend, networ
 
 ## Static-site audit status
 
-The original `m2026.zip` archive is not currently exposed as an accessible file in this development session. No exact file count, page count or asset inventory should be treated as verified until that archive is available for direct inspection.
+The original `m2026.zip` binary is not present in the current conversation attachment index or in the connected GitHub repositories. The extraction utility is committed and ready, but no exact page count, file count, asset inventory or static migration should be treated as complete until the archive is uploaded or made accessible.
 
 ## Pull request target
 
-The implementation branch will remain in draft until the Laravel test suite passes, frontend assets compile successfully, the original M2026 package is migrated, and the resulting pages pass visual review.
+The implementation branch will remain in draft until the Python audit runs against the original archive, the Laravel test suite passes, frontend assets compile successfully, the original M2026 package is migrated, and the resulting pages pass visual review.
