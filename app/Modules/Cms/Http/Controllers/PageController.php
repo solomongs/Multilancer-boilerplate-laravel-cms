@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Modules\Cms\Models\Page;
 use App\Services\ThemeManager;
 use Illuminate\Contracts\View\View;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\View as ViewFacade;
 
 class PageController extends Controller
@@ -16,7 +15,7 @@ class PageController extends Controller
         $page = Page::query()
             ->published()
             ->where('is_homepage', true)
-            ->with(['sections' => fn (HasMany $query) => $query->renderable()])
+            ->with(['sections' => fn ($query) => $query->renderable()])
             ->first();
 
         if (! $page instanceof Page) {
@@ -33,7 +32,7 @@ class PageController extends Controller
         $page = Page::query()
             ->published()
             ->where('slug', $slug)
-            ->with(['sections' => fn (HasMany $query) => $query->renderable()])
+            ->with(['sections' => fn ($query) => $query->renderable()])
             ->firstOrFail();
 
         return $this->render($page);
@@ -44,9 +43,11 @@ class PageController extends Controller
         $theme = config('cms.default_theme', 'm2026');
         app(ThemeManager::class)->setTheme(is_string($theme) ? $theme : 'm2026');
 
+        $defaultTemplate = config('cms.default_template', 'default');
+        $defaultTemplate = is_string($defaultTemplate) ? $defaultTemplate : 'default';
         $template = preg_match('/^[a-z0-9_-]+$/', $page->template) === 1
             ? $page->template
-            : config('cms.default_template', 'default');
+            : $defaultTemplate;
         $view = 'pages.'.$template;
 
         if (! ViewFacade::exists($view)) {
