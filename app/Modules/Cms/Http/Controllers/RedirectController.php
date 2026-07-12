@@ -11,11 +11,8 @@ class RedirectController extends Controller
 {
     public function __invoke(Request $request): RedirectResponse
     {
-        $sourcePath = CmsRedirect::normalizeSourcePath($request->getPathInfo());
-        $redirect = CmsRedirect::query()
-            ->enabled()
-            ->where('source_path', $sourcePath)
-            ->firstOrFail();
+        $redirect = CmsRedirect::resolvePath($request->getPathInfo());
+        abort_unless($redirect instanceof CmsRedirect, 404);
 
         $redirect->recordHit();
 
