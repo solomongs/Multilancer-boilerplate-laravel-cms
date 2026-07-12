@@ -1,0 +1,33 @@
+@import 'tailwindcss';
+
+:root {
+    --m2026-primary: #0f766e;
+    --m2026-secondary: #0f172a;
+    --m2026-accent: #86198f;
+    --m2026-surface: #ffffff;
+    --m2026-text: #0f172a;
+}
+
+.m2026-site {
+    min-height: 100vh;
+    margin: 0;
+    background: var(--m2026-surface);
+    color: var(--m2026-text);
+}
+
+.m2026-skip-link {
+    position: fixed;
+    left: 1rem;
+    top: -5rem;
+    z-index: 1000;
+    border-radius: 0.5rem;
+    background: var(--m2026-secondary);
+    color: white;
+    padding: 0.75rem 1rem;
+}
+
+.m2026-skip-link:focus {
+    top: 1rem;
+}
+
+/* Original M2026 styles will be migrated here component by component after audit. */
