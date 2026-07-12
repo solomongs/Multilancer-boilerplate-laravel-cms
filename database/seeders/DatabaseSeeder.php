@@ -36,5 +36,12 @@ class DatabaseSeeder extends Seeder
             'version' => '0.1.0',
             'description' => 'Structured page, section, publishing, revision and SEO management for M2026.',
         ]);
+
+        // Leads captures public website enquiries and exposes them to the CMS team.
+        Module::firstOrCreate(['name' => 'Leads'], [
+            'enabled' => true,
+            'version' => '0.1.0',
+            'description' => 'Secure website enquiry collection and lead management for Multilancer.',
+        ]);
     }
 }
