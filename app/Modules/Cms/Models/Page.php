@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
+use Illuminate\Validation\ValidationException;
 
 /**
  * @property int $id
@@ -55,11 +56,25 @@ class Page extends Model
     protected static function booted(): void
     {
         static::saving(function (Page $page): void {
+            $reservedSlugs = array_values(array_filter(
+                config('cms.reserved_slugs', []),
+                'is_string',
+            ));
+
+            if (in_array($page->slug, $reservedSlugs, true)) {
+                throw ValidationException::withMessages([
+                    'slug' => 'This URL is reserved by the application and cannot be used for a CMS page.',
+                ]);
+            }
+
             if ($page->is_homepage) {
-                static::query()
-                    ->whereKeyNot($page->getKey())
-                    ->where('is_homepage', true)
-                    ->update(['is_homepage' => false]);
+                $otherHomepages = static::query()->where('is_homepage', true);
+
+                if ($page->exists) {
+                    $otherHomepages->whereKeyNot($page->getKey());
+                }
+
+                $otherHomepages->update(['is_homepage' => false]);
             }
         });
     }
