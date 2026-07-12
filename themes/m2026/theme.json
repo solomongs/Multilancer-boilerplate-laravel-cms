@@ -1,0 +1,12 @@
+{
+    "name": "m2026",
+    "label": "Multilancer M2026",
+    "description": "Blade theme preserving the original M2026 static website design and responsive behaviour.",
+    "version": "0.1.0",
+    "author": "Multilancer Limited",
+    "colors": {
+        "primary": "emerald",
+        "secondary": "slate",
+        "accent": "fuchsia"
+    }
+}
