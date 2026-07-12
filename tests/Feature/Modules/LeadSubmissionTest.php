@@ -39,6 +39,10 @@ it('accepts JSON enquiries when at least one contact method is supplied', functi
         'phone' => '+234 801 234 5678',
         'message' => 'Please call me about a training programme.',
         'source' => 'course_enquiry',
+        'metadata' => [
+            'course' => 'Python and AI',
+            'preferred_contact' => 'phone',
+        ],
     ])
         ->assertCreated()
         ->assertJsonPath('message', 'Thank you. Your enquiry has been received.')
@@ -52,7 +56,7 @@ it('accepts JSON enquiries when at least one contact method is supplied', functi
     ]);
 });
 
-it('rejects submissions without contact details and bot honeypot submissions', function () {
+it('rejects missing contact details, bot honeypots and unapproved metadata', function () {
     $this->postJson('/contact/submit', [
         'name' => 'No Contact',
         'message' => 'This submission has no email or phone.',
@@ -64,6 +68,13 @@ it('rejects submissions without contact details and bot honeypot submissions', f
         'message' => 'Automated spam.',
         'website' => 'https://spam.example',
     ])->assertUnprocessable()->assertJsonValidationErrors(['website']);
+
+    $this->postJson('/contact/submit', [
+        'name' => 'Metadata Abuse',
+        'email' => 'metadata@example.com',
+        'message' => 'Attempting to store an arbitrary payload.',
+        'metadata' => ['unexpected_payload' => 'not allowed'],
+    ])->assertUnprocessable()->assertJsonValidationErrors(['metadata']);
 
     expect(Lead::query()->count())->toBe(0);
 });
@@ -86,18 +97,25 @@ it('rate limits repeated public lead submissions', function () {
         ->assertStatus(429);
 });
 
-it('records the first meaningful contact timestamp when a lead advances', function () {
-    $lead = Lead::query()->create([
+it('records contact timestamps only for meaningful workflow advancement', function () {
+    $contactedLead = Lead::query()->create([
         'name' => 'Workflow Lead',
         'email' => 'workflow@example.com',
         'message' => 'Please contact me.',
         'source' => 'contact_form',
         'status' => 'new',
     ]);
+    $spamLead = Lead::query()->create([
+        'name' => 'Spam Lead',
+        'email' => 'spam@example.com',
+        'message' => 'Spam content.',
+        'source' => 'contact_form',
+        'status' => 'new',
+    ]);
 
-    expect($lead->contacted_at)->toBeNull();
+    $contactedLead->update(['status' => 'contacted']);
+    $spamLead->update(['status' => 'spam']);
 
-    $lead->update(['status' => 'contacted']);
-
-    expect($lead->fresh()->contacted_at)->not->toBeNull();
+    expect($contactedLead->fresh()->contacted_at)->not->toBeNull()
+        ->and($spamLead->fresh()->contacted_at)->toBeNull();
 });
