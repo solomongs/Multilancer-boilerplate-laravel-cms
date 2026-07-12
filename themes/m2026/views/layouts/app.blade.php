@@ -16,13 +16,13 @@
 <body class="m2026-site">
     <a class="m2026-skip-link" href="#main-content">Skip to content</a>
 
-    @includeIf('m2026::components.header')
+    @includeIf('components.header')
 
     <main id="main-content">
         @yield('content')
     </main>
 
-    @includeIf('m2026::components.footer')
+    @includeIf('components.footer')
 
     @livewireScripts
     @themeJs
