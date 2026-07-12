@@ -54,7 +54,9 @@ The frontend is being converted into reusable Blade layouts, components and stru
 - [x] Add HTML and JSON submission responses
 - [x] Add a reusable accessible M2026 contact-form section
 - [x] Add `/soloadmin` lead management
-- [x] Add lead submission, privacy, spam, rendering and workflow tests
+- [x] Add configurable multi-recipient new-lead email notifications
+- [x] Keep email notification delivery synchronous and failure-tolerant for shared hosting
+- [x] Add lead submission, privacy, spam, rendering, workflow and notification tests
 
 ### Verification
 
@@ -86,6 +88,8 @@ The live AppDeploy delivery tracker has passed its own frontend, backend, networ
 - Redirect enable/disable control, status codes, hit counts and last-hit timestamps
 - Secure public lead capture with email-or-phone validation
 - Rate limiting, honeypot rejection and privacy-safe request metadata
+- Configurable comma-separated lead notification recipients through `LEADS_NOTIFICATION_EMAILS`
+- Shared-hosting-compatible email delivery that does not require queue workers
 - Theme-based homepage and default-page rendering
 - Public fallback to the original welcome page when no CMS homepage exists
 
