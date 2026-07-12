@@ -83,7 +83,7 @@ it('rate limits repeated public lead submissions', function () {
 
     $this->withServerVariables(['REMOTE_ADDR' => '198.51.100.25'])
         ->postJson('/contact/submit', $payload)
-        ->assertTooManyRequests();
+        ->assertStatus(429);
 });
 
 it('records the first meaningful contact timestamp when a lead advances', function () {
