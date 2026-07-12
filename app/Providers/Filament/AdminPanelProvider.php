@@ -32,7 +32,7 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('admin')
-            ->path('admin')
+            ->path('soloadmin')
             ->login()
             ->colors(app(ThemeManager::class)->getFilamentColors(app(ThemeManager::class)->getSiteTheme()))
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')

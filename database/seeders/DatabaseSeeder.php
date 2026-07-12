@@ -29,5 +29,19 @@ class DatabaseSeeder extends Seeder
             'version' => '1.0.0',
             'description' => 'A working blog module — the reference implementation for app/Modules.',
         ]);
+
+        // CMS powers the public M2026 website and must be available immediately after install.
+        Module::firstOrCreate(['name' => 'Cms'], [
+            'enabled' => true,
+            'version' => '0.1.0',
+            'description' => 'Structured page, section, publishing, revision and SEO management for M2026.',
+        ]);
+
+        // Leads captures public website enquiries and exposes them to the CMS team.
+        Module::firstOrCreate(['name' => 'Leads'], [
+            'enabled' => true,
+            'version' => '0.1.0',
+            'description' => 'Secure website enquiry collection and lead management for Multilancer.',
+        ]);
     }
 }
