@@ -2,8 +2,12 @@
 
 use App\Modules\Cms\Http\Controllers\PageController;
 use App\Modules\Cms\Http\Controllers\RedirectController;
+use App\Modules\Cms\Http\Controllers\RobotsController;
 use App\Modules\Cms\Http\Controllers\SitemapController;
 use Illuminate\Support\Facades\Route;
+
+Route::get('/robots.txt', RobotsController::class)
+    ->name('cms.robots');
 
 Route::get('/sitemap.xml', SitemapController::class)
     ->name('cms.sitemap');
