@@ -25,6 +25,14 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Test M2026 archive extractor
+        run: python -m unittest scripts.tests.test_extract_m2026 -v
+
       - name: Get Composer cache directory
         id: composer-cache
         run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
