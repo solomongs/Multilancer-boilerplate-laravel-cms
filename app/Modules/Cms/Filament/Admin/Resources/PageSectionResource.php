@@ -6,9 +6,7 @@ use App\Modules\Cms\Filament\Admin\Resources\PageSectionResource\Pages\CreatePag
 use App\Modules\Cms\Filament\Admin\Resources\PageSectionResource\Pages\EditPageSection;
 use App\Modules\Cms\Filament\Admin\Resources\PageSectionResource\Pages\ListPageSections;
 use App\Modules\Cms\Models\PageSection;
-use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
-use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -147,12 +145,10 @@ class PageSectionResource extends Resource
             ])
             ->recordActions([
                 EditAction::make(),
-                DeleteAction::make(),
-            ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
+                DeleteAction::make()
+                    ->before(function (PageSection $record): void {
+                        $record->page?->createRevision(auth()->id());
+                    }),
             ])
             ->defaultSort('sort_order');
     }
