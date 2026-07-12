@@ -3,6 +3,10 @@
 use App\Modules\Cms\Http\Controllers\PageController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/cms-preview/{page:id}', [PageController::class, 'preview'])
+    ->middleware(['auth:sanctum', config('jetstream.auth_session')])
+    ->name('cms.pages.preview');
+
 $reservedSlugs = array_map(
     static fn (string $slug): string => preg_quote($slug, '/'),
     array_filter(config('cms.reserved_slugs', []), 'is_string'),
