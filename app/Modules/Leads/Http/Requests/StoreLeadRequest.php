@@ -24,7 +24,13 @@ class StoreLeadRequest extends FormRequest
             'message' => ['required', 'string', 'max:5000'],
             'source' => ['required', 'string', Rule::in(array_keys(config('leads.sources', [])))],
             'page_url' => ['nullable', 'url:http,https', 'max:2048'],
-            'metadata' => ['nullable', 'array', 'max:25'],
+            'metadata' => ['nullable', 'array:service,course,plan,budget,preferred_contact,campaign'],
+            'metadata.service' => ['nullable', 'string', 'max:255'],
+            'metadata.course' => ['nullable', 'string', 'max:255'],
+            'metadata.plan' => ['nullable', 'string', 'max:255'],
+            'metadata.budget' => ['nullable', 'string', 'max:255'],
+            'metadata.preferred_contact' => ['nullable', 'string', 'max:100'],
+            'metadata.campaign' => ['nullable', 'string', 'max:255'],
             'website' => ['nullable', 'string', 'max:0'],
         ];
     }
