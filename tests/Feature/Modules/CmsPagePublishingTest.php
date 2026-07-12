@@ -2,6 +2,7 @@
 
 use App\Modules\Cms\Models\Page;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Validation\ValidationException;
 
 uses(RefreshDatabase::class);
 
@@ -95,4 +96,14 @@ it('keeps only one page marked as the homepage', function () {
 
     expect($first->fresh()->is_homepage)->toBeFalse()
         ->and($second->fresh()->is_homepage)->toBeTrue();
+});
+
+it('rejects application-reserved page slugs at the model boundary', function () {
+    expect(fn () => Page::query()->create([
+        'title' => 'Fake Login',
+        'slug' => 'login',
+        'status' => 'published',
+    ]))->toThrow(ValidationException::class);
+
+    expect(Page::query()->where('slug', 'login')->exists())->toBeFalse();
 });
