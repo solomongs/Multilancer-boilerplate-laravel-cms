@@ -38,7 +38,14 @@ class PageController extends Controller
         return $this->render($page);
     }
 
-    private function render(Page $page): View
+    public function preview(Page $page): View
+    {
+        $page->load(['sections' => fn ($query) => $query->renderable()]);
+
+        return $this->render($page, true);
+    }
+
+    private function render(Page $page, bool $isPreview = false): View
     {
         $theme = config('cms.default_theme', 'm2026');
         app(ThemeManager::class)->setTheme(is_string($theme) ? $theme : 'm2026');
@@ -57,6 +64,7 @@ class PageController extends Controller
         return view($view, [
             'page' => $page,
             'sections' => $page->sections,
+            'isPreview' => $isPreview,
         ]);
     }
 }
