@@ -4,6 +4,7 @@
 
 - Live checklist tracker: https://308f7ac1d1470ca9d4.v2.appdeploy.ai/
 - Repository: https://github.com/solomongs/Multilancer-boilerplate-laravel-cms
+- Draft pull request: https://github.com/solomongs/Multilancer-boilerplate-laravel-cms/pull/1
 - Development branch: `feature/m2026-refactor`
 - Protected admin path: `/soloadmin`
 
@@ -12,7 +13,7 @@
 The project uses the Liberu Laravel boilerplate as the foundation and remains a modular monolith.
 The existing M2026 frontend is the visual source of truth. Public pages remain accessible without authentication, while CMS administration is restricted to Filament at `/soloadmin`.
 
-The frontend will be converted into reusable Blade layouts, components and structured sections. It must not be embedded through an iframe or stored as one unrestricted HTML field.
+The frontend is being converted into reusable Blade layouts, components and structured sections. It must not be embedded through an iframe or stored as one unrestricted HTML field.
 
 ## First implementation scope
 
@@ -22,11 +23,34 @@ The frontend will be converted into reusable Blade layouts, components and struc
 - [x] Change the Filament admin path to `/soloadmin`
 - [x] Add an automated test for the admin login path
 - [ ] Complete the file-by-file M2026 audit
-- [ ] Create the M2026 theme scaffold
-- [ ] Create CMS Page and PageSection models
-- [ ] Add migrations and the initial Filament Page resource
-- [ ] Add public page routing and homepage rendering
-- [ ] Add baseline CMS tests
+- [x] Create and register the M2026 theme scaffold
+- [x] Create CMS Page, PageSection and PageRevision models
+- [x] Add CMS migrations
+- [x] Add Filament Page and Page Section resources
+- [x] Add public page routing and homepage rendering
+- [x] Add structured hero, rich-text, image-text and call-to-action renderers
+- [x] Add publishing, homepage and revision tests
+- [x] Add pull-request CI configuration for migrations, tests and frontend build
+- [ ] Receive a successful GitHub Actions run
+- [ ] Migrate the audited M2026 HTML, CSS, JavaScript and assets
+
+## Verification state
+
+Implementation files and tests are committed. GitHub currently reports no workflow run or commit checks for this fork, so the PHP tests and frontend build must not be described as passing until Actions is enabled and completes successfully.
+
+## Current CMS capabilities
+
+- Draft, review, scheduled, published and archived page states
+- Single-homepage enforcement
+- Scheduled publication visibility
+- Soft-deleted pages
+- SEO title, description, canonical URL and robots controls
+- Ordered, enable/disable structured page sections
+- JSON content and display settings for page sections
+- Pre-save page revisions
+- Transactional page and section restoration
+- Theme-based homepage and default-page rendering
+- Public fallback to the original welcome page when no CMS homepage exists
 
 ## Hard constraints
 
@@ -39,10 +63,10 @@ The frontend will be converted into reusable Blade layouts, components and struc
 - Keep optional features modular so they can be enabled or disabled.
 - Defer GrapesJS, advanced CRM, SMS, AI, multisite and e-commerce until the CMS foundation is stable.
 
-## Known static-site scope
+## Static-site audit status
 
-The current known M2026 package contains approximately 20 HTML pages, shared `styles.css`, `app.js`, `ai-assistant.js`, and image assets. The known route groups include home, about, services, courses, hosting, blog, Saturday class, AI consultation and contact pages. Exact filenames and counts must be validated against the uploaded package during the audit phase.
+The original `m2026.zip` archive is not currently exposed as an accessible file in this development session. No exact file count, page count or asset inventory should be treated as verified until that archive is available for direct inspection.
 
 ## Pull request target
 
-The implementation branch will be reviewed through a pull request into `main` after the first controlled milestone passes tests and visual review.
+The implementation branch will remain in draft until the first controlled milestone passes automated tests, frontend asset compilation and visual review.
