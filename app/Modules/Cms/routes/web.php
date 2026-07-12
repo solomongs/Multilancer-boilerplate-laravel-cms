@@ -9,7 +9,7 @@ $reservedSlugs = array_map(
 );
 $reservedPattern = $reservedSlugs === []
     ? ''
-    : '(?!'.implode('|', $reservedSlugs).'$)';
+    : '(?!(?:'.implode('|', $reservedSlugs).')$)';
 
 Route::get('/{slug}', [PageController::class, 'show'])
     ->where('slug', '^'.$reservedPattern.'[a-z0-9][a-z0-9-]*$')
