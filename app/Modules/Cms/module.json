@@ -1,0 +1,20 @@
+{
+    "name": "Cms",
+    "version": "0.1.0",
+    "description": "Structured page, section, publishing, revision and SEO management for the M2026 website.",
+    "dependencies": [],
+    "config": {
+        "enabled": true,
+        "default_theme": "m2026",
+        "default_template": "default",
+        "reserved_slugs": [
+            "api",
+            "app",
+            "dashboard",
+            "login",
+            "logout",
+            "register",
+            "soloadmin"
+        ]
+    }
+}
