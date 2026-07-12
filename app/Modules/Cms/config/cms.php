@@ -7,6 +7,7 @@ return [
         'api',
         'app',
         'billing',
+        'cms-preview',
         'dashboard',
         'email',
         'forgot-password',
