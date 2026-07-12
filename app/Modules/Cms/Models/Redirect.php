@@ -33,8 +33,24 @@ class Redirect extends Model
     {
         static::saving(function (Redirect $redirect): void {
             $redirect->source_path = self::normalizeSourcePath($redirect->source_path);
+            $destination = trim($redirect->destination_url);
+            $isInternalDestination = str_starts_with($destination, '/') && ! str_starts_with($destination, '//');
+            $isExternalDestination = filter_var($destination, FILTER_VALIDATE_URL) !== false
+                && in_array(parse_url($destination, PHP_URL_SCHEME), ['http', 'https'], true);
 
-            if ($redirect->destination_url === $redirect->source_path) {
+            if ($redirect->source_path === '/') {
+                throw ValidationException::withMessages([
+                    'source_path' => 'The homepage cannot be handled by the legacy redirect registry.',
+                ]);
+            }
+
+            if (! $isInternalDestination && ! $isExternalDestination) {
+                throw ValidationException::withMessages([
+                    'destination_url' => 'Use a site-relative path or a complete HTTP/HTTPS URL.',
+                ]);
+            }
+
+            if ($isInternalDestination && self::normalizeSourcePath($destination) === $redirect->source_path) {
                 throw ValidationException::withMessages([
                     'destination_url' => 'A redirect cannot point to the same path as its source.',
                 ]);
@@ -45,6 +61,8 @@ class Redirect extends Model
                     'status_code' => 'Redirect status must be 301, 302, 307 or 308.',
                 ]);
             }
+
+            $redirect->destination_url = $destination;
         });
     }
 
@@ -71,6 +89,14 @@ class Redirect extends Model
         $path = Str::before($path, '?');
 
         return $path === '/' ? '/' : rtrim($path, '/');
+    }
+
+    public static function resolvePath(string $path): ?self
+    {
+        return static::query()
+            ->enabled()
+            ->where('source_path', static::normalizeSourcePath($path))
+            ->first();
     }
 
     public function recordHit(): void
