@@ -4,8 +4,10 @@ namespace App\Modules\Cms\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Modules\Cms\Models\Page;
+use App\Modules\Cms\Models\Redirect as CmsRedirect;
 use App\Services\ThemeManager;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\View as ViewFacade;
 
 class PageController extends Controller
@@ -25,7 +27,7 @@ class PageController extends Controller
         return $this->render($page);
     }
 
-    public function show(string $slug): View
+    public function show(string $slug): View|RedirectResponse
     {
         abort_if(in_array($slug, config('cms.reserved_slugs', []), true), 404);
 
@@ -33,9 +35,18 @@ class PageController extends Controller
             ->published()
             ->where('slug', $slug)
             ->with(['sections' => fn ($query) => $query->renderable()])
-            ->firstOrFail();
+            ->first();
 
-        return $this->render($page);
+        if ($page instanceof Page) {
+            return $this->render($page);
+        }
+
+        $redirect = CmsRedirect::resolvePath('/'.$slug);
+        abort_unless($redirect instanceof CmsRedirect, 404);
+
+        $redirect->recordHit();
+
+        return redirect()->to($redirect->destination_url, $redirect->status_code);
     }
 
     public function preview(Page $page): View
