@@ -65,7 +65,11 @@ class Lead extends Model
                 ]);
             }
 
-            if ($lead->isDirty('status') && $lead->status !== 'new' && $lead->contacted_at === null) {
+            $contactedStatuses = ['contacted', 'qualified', 'proposal', 'won', 'lost'];
+
+            if ($lead->isDirty('status')
+                && in_array($lead->status, $contactedStatuses, true)
+                && $lead->contacted_at === null) {
                 $lead->contacted_at = now();
             }
         });
