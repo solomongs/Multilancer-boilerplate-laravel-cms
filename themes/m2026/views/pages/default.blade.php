@@ -2,6 +2,9 @@
 
 @section('title', $page->meta_title ?: $page->title)
 @section('meta_description', $page->meta_description ?: ($page->excerpt ?? ''))
+@section('robots', ! empty($isPreview) ? 'noindex,nofollow' : ($page->robots ?: 'index,follow'))
+@section('canonical_url', $page->canonical_url ?: url()->current())
+@section('og_type', 'website')
 
 @section('content')
     <article class="m2026-page" data-page-slug="{{ $page->slug }}">
