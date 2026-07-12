@@ -41,3 +41,28 @@ it('restores page fields and structured sections from a revision', function () {
         ->and($restored->sections->first()->content['heading'])->toBe('Original heading')
         ->and($revision->fresh()->restored_at)->not->toBeNull();
 });
+
+it('can restore the page to before a section was added', function () {
+    $page = Page::query()->create([
+        'title' => 'Section history',
+        'slug' => 'section-history',
+        'template' => 'default',
+        'status' => 'draft',
+    ]);
+
+    $revision = $page->createRevision();
+
+    $page->sections()->create([
+        'section_type' => 'hero',
+        'section_name' => 'New hero',
+        'content' => ['title' => 'Added later'],
+        'sort_order' => 10,
+        'is_enabled' => true,
+    ]);
+
+    expect($page->fresh()->sections)->toHaveCount(1);
+
+    $restored = $revision->restore();
+
+    expect($restored->sections)->toHaveCount(0);
+});
