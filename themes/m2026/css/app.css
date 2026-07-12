@@ -2,10 +2,16 @@
 
 :root {
     --m2026-primary: #0f766e;
+    --m2026-primary-dark: #115e59;
     --m2026-secondary: #0f172a;
     --m2026-accent: #86198f;
     --m2026-surface: #ffffff;
+    --m2026-surface-muted: #f8fafc;
     --m2026-text: #0f172a;
+    --m2026-text-muted: #475569;
+    --m2026-border: #e2e8f0;
+    --m2026-radius: 1rem;
+    --m2026-shadow: 0 20px 45px rgb(15 23 42 / 0.08);
 }
 
 .m2026-site {
@@ -13,6 +19,176 @@
     margin: 0;
     background: var(--m2026-surface);
     color: var(--m2026-text);
+    font-family: 'Instrument Sans', sans-serif;
+    line-height: 1.65;
+}
+
+.m2026-site img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+.m2026-container {
+    width: min(100% - 2rem, 74rem);
+    margin-inline: auto;
+}
+
+.m2026-section,
+.m2026-page__header {
+    padding-block: clamp(3rem, 7vw, 6rem);
+}
+
+.m2026-page__header {
+    background: var(--m2026-surface-muted);
+    border-bottom: 1px solid var(--m2026-border);
+}
+
+.m2026-page__header h1,
+.m2026-section h2 {
+    margin: 0;
+    color: var(--m2026-secondary);
+    font-size: clamp(2rem, 5vw, 4rem);
+    line-height: 1.08;
+}
+
+.m2026-page__header p,
+.m2026-hero__text,
+.m2026-cta p {
+    max-width: 48rem;
+    margin-top: 1rem;
+    color: var(--m2026-text-muted);
+    font-size: clamp(1rem, 2vw, 1.2rem);
+}
+
+.m2026-header,
+.m2026-footer {
+    border-color: var(--m2026-border);
+    background: var(--m2026-surface);
+}
+
+.m2026-header {
+    border-bottom: 1px solid var(--m2026-border);
+}
+
+.m2026-footer {
+    border-top: 1px solid var(--m2026-border);
+}
+
+.m2026-header__inner,
+.m2026-footer__inner {
+    width: min(100% - 2rem, 74rem);
+    margin-inline: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 1.25rem;
+}
+
+.m2026-brand {
+    color: var(--m2026-secondary);
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.m2026-navigation,
+.m2026-footer nav,
+.m2026-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+}
+
+.m2026-navigation a,
+.m2026-footer a {
+    color: var(--m2026-text-muted);
+    text-decoration: none;
+}
+
+.m2026-navigation a:hover,
+.m2026-footer a:hover {
+    color: var(--m2026-primary);
+}
+
+.m2026-hero {
+    background: linear-gradient(135deg, #ecfeff 0%, #ffffff 55%, #fdf4ff 100%);
+}
+
+.m2026-hero__eyebrow {
+    color: var(--m2026-primary);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.m2026-actions {
+    margin-top: 2rem;
+}
+
+.m2026-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 3rem;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    padding: 0.7rem 1.25rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: 160ms ease;
+}
+
+.m2026-button--primary {
+    background: var(--m2026-primary);
+    color: #ffffff;
+}
+
+.m2026-button--primary:hover {
+    background: var(--m2026-primary-dark);
+    transform: translateY(-1px);
+}
+
+.m2026-button--secondary {
+    border-color: var(--m2026-border);
+    background: var(--m2026-surface);
+    color: var(--m2026-secondary);
+}
+
+.m2026-prose {
+    max-width: 48rem;
+    margin-top: 1.25rem;
+    color: var(--m2026-text-muted);
+}
+
+.m2026-image-text__grid {
+    display: grid;
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: center;
+}
+
+.m2026-image-text__media img {
+    width: 100%;
+    border-radius: var(--m2026-radius);
+    box-shadow: var(--m2026-shadow);
+}
+
+.m2026-cta {
+    background: var(--m2026-secondary);
+    color: #ffffff;
+}
+
+.m2026-cta__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.m2026-cta h2,
+.m2026-cta p {
+    color: #ffffff;
 }
 
 .m2026-skip-link {
@@ -30,4 +206,19 @@
     top: 1rem;
 }
 
-/* Original M2026 styles will be migrated here component by component after audit. */
+@media (min-width: 48rem) {
+    .m2026-image-text__grid {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 47.99rem) {
+    .m2026-header__inner,
+    .m2026-footer__inner,
+    .m2026-cta__inner {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+/* Original M2026 styles will replace and extend this safe structural baseline after audit. */
